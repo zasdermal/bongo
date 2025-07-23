@@ -14,7 +14,7 @@ Route::get('health-check', function (Request $request){
 
 Route::post('sign-in', [AuthController::class, 'signin']);
 
-// Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
     /*
     |--------------------------------------------------------------------------
     | Access Route
@@ -51,4 +51,4 @@ Route::post('sign-in', [AuthController::class, 'signin']);
     // require __DIR__ . '/Report/report.php';
 
     // Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-// });
+});
