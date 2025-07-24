@@ -81,8 +81,10 @@ class StockController extends Controller
             // Serialize products using a foreach loop
             $serializeStocks = [];
             foreach ($stocks as $stock) {
+                $product = Product::where('sku', $stock->sku)->first();
                 $serializeStocks[] = [
                     'stock_id' => $stock->id,
+                    'category' => $product->category->name,
                     'product_name' => $stock->product_name,
                     'sku' => $stock->sku,
                     'unit_price' => $stock->mrp
