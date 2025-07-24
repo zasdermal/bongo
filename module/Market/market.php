@@ -54,4 +54,4 @@ Route::post('/update-sale-point/{id}', [SalePointController::class, 'update'])->
 Route::get('/destroy-sale-point/{id}', [SalePointController::class, 'destroy'])->name('destroy_salePoint');
 
 Route::post('/bulk-upload-sale-points', [SalePointController::class, 'bulk_upload_salePoints'])->name('bulk_upload_salePoints');
-Route::get('/sale-point-by-territory_{id}', [SalePointController::class, 'salePoint_by_territory_'])->name('salePoint_by_territory_');
+Route::get('/sale-point-by-territory_{id}', [SalePointController::class, 'salePoint_by_territory_'])->name('salePoint_by_territory_'); // it will be salePoints

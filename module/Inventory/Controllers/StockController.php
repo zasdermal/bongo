@@ -63,4 +63,46 @@ class StockController extends Controller
             'message' => 'Stocks added successfully!',
         ]);
     }
+
+    // API
+    public function availabel_stocks(Request $request)
+    {
+        try {
+            $stocks = Stock::whereNot('quantity', 0)->get();
+
+            // Check if any products are not found
+            if ($stocks->isEmpty()) {
+                return response()->json([
+                    'status' => 'ERROR',
+                    'message' => 'No products found.'
+                ], 200);
+            }
+
+            // Serialize products using a foreach loop
+            $serializeStocks = [];
+            foreach ($stocks as $stock) {
+                $serializeStocks[] = [
+                    'stock_id' => $stock->id,
+                    'product_name' => $stock->product_name,
+                    'sku' => $stock->sku,
+                    'unit_price' => $stock->mrp
+                ];
+            }
+
+            // Return successful response
+            return response()->json([
+                'status' => 'SUCCESS',
+                'data' => $serializeStocks,
+                'message' => 'Products retrieved successfully.'
+            ], 200);
+
+        } catch (\Exception $e) {
+            // Return error response
+            return response()->json([
+                'status' => 'ERROR',
+                'message' => 'Failed to retrieve products.',
+                'error' => $e->getMessage() // Optionally include the error message in development
+            ], 200);
+        }
+    }
 }

@@ -179,6 +179,72 @@ class SalePointController extends Controller
         ]);
     }
 
+    // API
+    public function salePoints_by_territory(Request $request)
+    {
+        try {
+            $territoryIds = collect(); // Store allowed territory IDs
+
+            if ($request->filled('region_id') && $request->region_id != 0) {
+                $region_id = $request->region_id;
+                $territoryIds = Territory::whereHas('area.region', function ($query) use ($region_id) {
+                    $query->where('id', $region_id);
+                })->pluck('id');
+            }
+
+            if ($request->filled('area_id') && $request->area_id != 0) {
+                $area_id = $request->area_id;
+                $territoryIds = Territory::whereHas('area', function ($query) use ($area_id) {
+                    $query->where('id', $area_id);
+                })->pluck('id');
+            }
+
+            if ($request->filled('territory_id') && $request->territory_id != 0) {
+                $territory_id = $request->territory_id;
+                $territoryIds = collect([$territory_id]);
+            }
+
+            $serializeData = [];
+
+            // Fetch and format sales points data
+            $salePoints = SalePoint::where('is_active', 'Active')
+                ->whereIn('territory_id', $territoryIds)
+                // ->whereHas('territories', function ($query) use ($territoryIds) {
+                //     if ($territoryIds->isNotEmpty()) {
+                //         $query->whereIn('territory_id', $territoryIds);
+                //     }
+                // })
+                ->orderBy('id', 'desc')
+                ->get();
+
+            foreach ($salePoints as $salePoint) {
+                $serializeData[] = [
+                    'sale_point_id' => $salePoint->id,
+                    'territory_id' => $salePoint->territory->id,
+                    'area_id' => $salePoint->territory->area->id,
+                    'region_id' => $salePoint->territory->area->region->id,
+                    'sale_point_name' => $salePoint->name,
+                    'code_number' => $salePoint->code_number,
+                    'address' => $salePoint->address,
+                    'contact_number' => $salePoint->contact_number,
+                ];
+            }
+
+            return response()->json([
+                'status' => 'SUCCESS',
+                'count' => $salePoints->count(),
+                'data' => $serializeData,
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'ERROR',
+                'message' => 'Failed to retrieve data.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
     // helper
     private function generate_unique_code_number()
     {

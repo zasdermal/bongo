@@ -27,14 +27,14 @@ Route::middleware('auth:sanctum')->group(function () {
     | Inventory Route
     |--------------------------------------------------------------------------
     */
-    // require __DIR__ . '/Inventory/inventory.php';
+    require __DIR__ . '/Inventory/api_routes.php';
 
     /*
     |--------------------------------------------------------------------------
     | MArket Route
     |--------------------------------------------------------------------------
     */
-    // require __DIR__ . '/Market/market.php';
+    require __DIR__ . '/Market/api_routes.php';
 
     /*
     |--------------------------------------------------------------------------
