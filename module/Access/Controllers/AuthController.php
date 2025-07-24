@@ -107,8 +107,16 @@ class AuthController extends Controller
             'status' => 'SUCCESS',
             'data' => [
                 'user_id' => $user->id,
-                'name' => $user->name,
+                'role_id' => $user->role_id,
+                'region_id' => $user->employee->region_id,
+                'area_id' => $user->employee->area_id,
+                'territory_id' => $user->employee->territory_id,
                 'username' => $user->username,
+                'name' => $user->name,
+                'designation_name' => $user->employee->designation->name ?? null,
+                'contact' => $user->employee->contact,
+                'address' => $user->employee->address,
+                'joining_date' => $user->employee->joining_date,
                 'token' => $token
             ],
             'message' => 'User successfully login.'
