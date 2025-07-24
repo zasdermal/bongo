@@ -107,7 +107,7 @@ class AuthController extends Controller
             'status' => 'SUCCESS',
             'data' => [
                 'user_id' => $user->id,
-                'role_id' => $user->role_id,
+                'role_id' => $user->role->id,
                 'region_id' => $user->employee->region_id,
                 'area_id' => $user->employee->area_id,
                 'territory_id' => $user->employee->territory_id,
