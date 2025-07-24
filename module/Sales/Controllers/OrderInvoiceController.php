@@ -131,7 +131,7 @@ class OrderInvoiceController extends Controller
         }
 
         return response()->json([
-            'status' => true,
+            'status' => 'SUCCESS',
             'message' => 'The order has been submited successfully',
         ], 200);
     }
