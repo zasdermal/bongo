@@ -108,9 +108,9 @@ class AuthController extends Controller
             'data' => [
                 'user_id' => $user->id,
                 'role_id' => $user->role->id,
-                'region_id' => $user->employee->region->id,
-                'area_id' => $user->employee->area->id,
-                'territory_id' => $user->employee->territory->id,
+                'region_id' => $user->employee->region?->id,
+                'area_id' => $user->employee->area?->id,
+                'territory_id' => $user->employee->territory?->id,
                 'username' => $user->username,
                 'name' => $user->name,
                 'designation_name' => $user->employee->designation?->name,
