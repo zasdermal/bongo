@@ -102,7 +102,7 @@ class OrderInvoiceController extends Controller
             'orders.*.sku' => 'required',
             'orders.*.quantity' => 'required|numeric|min:1',
             'orders.*.unit_price' => 'required|numeric',
-            'orders.*.total_amount' => 'required|numeric'
+            'orders.*.order_total_amount' => 'required|numeric'
         ]);
 
         $auth_user = Auth::user();
@@ -124,7 +124,7 @@ class OrderInvoiceController extends Controller
                 'sku' => $order['sku'],
                 'quantity' => $order['quantity'],
                 'unit_price' => $order['unit_price'],
-                'total_amount' => $order['total_amount']
+                'total_amount' => $order['order_total_amount']
             ]);
 
             $orderInvoice->orders()->attach($order);
