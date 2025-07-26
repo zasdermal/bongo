@@ -20,6 +20,8 @@ Route::prefix('/order')->name('order.')->group(function () {
 
 Route::prefix('/collection')->name('collection.')->group(function () {
     Route::get('/dues', [CollectionController::class, 'dues'])->name('dues');
+    Route::get('/due/{id}', [CollectionController::class, 'due'])->name('due');
+    Route::post('/update-due/{id}', [CollectionController::class, 'update'])->name('update_due');
 
     //not needed
     // Route::get('/partial-dues', [CollectionController::class, 'partial_dues'])->name('partial_dues');
@@ -29,6 +31,4 @@ Route::prefix('/collection')->name('collection.')->group(function () {
     // Route::post('/return-order-and-update-invoice/{id}', [CollectionController::class, 'return_order_and_update_invoice'])->name('return_order_and_update_invoice');
     // Route::get('/collected-payment', [CollectionController::class, 'collected_payment'])->name('collected_payment');
     // Route::post('/bulk-upload-collections', [CollectionController::class, 'bulk_upload_collections'])->name('bulk_upload_collections');
-    // Route::get('/collection/{id}', [CollectionController::class, 'collection'])->name('collection');
-    // Route::post('/collection/update/{id}', [CollectionController::class, 'update'])->name('collection_update');
 });

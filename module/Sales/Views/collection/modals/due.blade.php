@@ -205,14 +205,16 @@
 </div>
 
 <script>
-    function collection(collection_id) {
-        let url = "{{ route('collections_report.collection', ['id' => ':collection_id']) }}";
-        let action = url.replace(':collection_id', collection_id);
+    function collection(id) {
+        let url = "{{ route('collection.due', ['id' => ':id']) }}";
+        let action = url.replace(':id', id);
 
         $.ajax({
             url: action,
             method: 'GET',
             success: function (data) {
+                console.log(data);
+                
                 // greetings
                 // const greetings_div = `
                 //     Dear ${ data.collection.order_invoice.sales_point.name }
@@ -243,30 +245,30 @@
                 $('#order_date').html(order_date_div);
 
                 // payment type
-                const payment_type_div = `
-                    <span class="text-muted">Payment Type</span>
-                    <span class="fs-7">${ data.collection.order_invoice.sales_point.payment_type }</span>
-                `;
+                // const payment_type_div = `
+                //     <span class="text-muted">Payment Type</span>
+                //     <span class="fs-7">${ data.collection.order_invoice.sales_point.payment_type }</span>
+                // `;
 
-                $('#payment_type').html(payment_type_div);
+                // $('#payment_type').html(payment_type_div);
 
                 // depot
-                const depot_div = `
-                    <span class="text-muted">Depot</span>
-                    <span class="fs-7">
-                        ${ data.collection.order_invoice.depot.name }
-                    </span>
-                `;
+                // const depot_div = `
+                //     <span class="text-muted">Depot</span>
+                //     <span class="fs-7">
+                //         ${ data.collection.order_invoice.depot.name }
+                //     </span>
+                // `;
 
-                $('#depot').html(depot_div);
+                // $('#depot').html(depot_div);
 
                 // address
                 const address_div = `
                     <span class="text-muted">Billing Address</span>
                     <span class="fs-7">
-                        ${ data.collection.order_invoice.sales_point.name } (${ data.collection.order_invoice.sales_point.code_number })
-                        <br /> ${ data.collection.order_invoice.sales_point.address }
-                        <br /> Phone: ${ data.collection.order_invoice.sales_point.contact_number }
+                        ${ data.collection.order_invoice.sale_point.name } (${ data.collection.order_invoice.sale_point.code_number })
+                        <br /> ${ data.collection.order_invoice.sale_point.address }
+                        <br /> Phone: ${ data.collection.order_invoice.sale_point.contact_number }
                     </span>
                 `;
 
@@ -277,14 +279,10 @@
                     <span class="text-muted">Order By</span>
                     <span class="fs-7">
                         User ID: ${ data.collection.order_invoice.user.username }
-                        <br /> Name: ${ data.collection.order_invoice.user.employee.name }
+                        <br /> Name: ${ data.collection.order_invoice.user.name }
                     </span>
 
-                    <span class="text-muted mt-2">Delivery By</span>
-                    <span class="fs-7">
-                        Delivery Man: ${ data.collection.order_invoice.delivery_man?.employee.name ?? '' }
-                        <br />Phone: ${ data.collection.order_invoice.delivery_man?.employee.contact ?? '' }
-                    </span>
+                    
                 `;
 
                 $('#order_and_delivery').html(order_and_delivery_div);
@@ -294,7 +292,7 @@
                 let tbody_content = '';
                 
                 orders.forEach((order, index) => {
-                    var total_order_amount = order.sell_unit_price * (order.quantity + order.return_qty);
+                    var total_order_amount = order.unit_price * (order.quantity + order.return_qty);
                     tbody_content += `
                         <tr>
                             <td>${ index + 1 }</td>
@@ -324,7 +322,7 @@
                             <!--end::Return Qty-->
 
                             <!--begin::Unit Price-->
-                            <td class="text-end">${ order.sell_unit_price }</td>
+                            <td class="text-end">${ order.unit_price }</td>
                             <!--end::Unit Price-->
 
                             <!--begin::Total-->
@@ -456,8 +454,8 @@
         });
 
         function submitForm(collected_payment, additional_discount, ait) {
-            let url = "{{ route('collections_report.collection_update', ['id' => ':collection_id']) }}";
-            let action = url.replace(':collection_id', collection_id);
+            let url = "{{ route('collection.update_due', ['id' => ':id']) }}";
+            let action = url.replace(':id', id);
 
             // Disable submit button to prevent double submissions
             const $submitBtn = $('#kt_modal_update_permission_form').find('button[type="submit"]');
@@ -482,7 +480,7 @@
                 success: function(response) {
                     // console.log(response);
                     
-                    window.location.href = "{{ route('collections_report.dues') }}";
+                    window.location.href = "{{ route('collection.dues') }}";
                 },
                 error: function(xhr) {
                     console.error(xhr);
@@ -527,3 +525,9 @@
 {{-- <td class="text-end">Tk ${ data.collection.order_invoice.status === 'Partial Return' ? total_order_amount.toFixed(2) : order.total_amount }</td> --}}
 {{-- ${ data.collection.order_invoice.sales_point.sell_discount_type === 'TP' ? order.depot_stock_product.trade_price : order.depot_stock_product.mrp } --}}
 {{-- <td class="text-end">${ data.collection.order_invoice.status === 'Partial Return' ? order.quantity + order.return_qty : order.quantity }</td> --}}
+
+{{-- <span class="text-muted mt-2">Delivery By</span>
+                    <span class="fs-7">
+                        Delivery Man: ${ data.collection.order_invoice.delivery_man?.employee.name ?? '' }
+                        <br />Phone: ${ data.collection.order_invoice.delivery_man?.employee.contact ?? '' }
+                    </span> --}}

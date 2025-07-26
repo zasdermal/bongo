@@ -119,26 +119,12 @@ class CollectionController extends Controller
         return view('Sales::collection.dues', $data);
     }
 
-    public function partial_dues(Request $request)
-    {
-        $data['breadcrumbs'] = [
-            ['title' => 'Dashboard', 'url' => route('dashboard')],
-            ['title' => 'Collections Report', 'url' => null],
-            ['title' => 'Partial Dues', 'url' => null]
-        ];
-        $data['partial_payment'] = Collection::where('status', 'Partial Payment')->get();
-
-        return view('collections_report.partial_dues', $data);
-    }
-
-    public function collection($id)
+    public function due($id)
     {
         $collection = Collection::with(
-            'order_invoice.orders.depot_stock_product',
-            'order_invoice.depot',
-            'order_invoice.sales_point',
-            'order_invoice.delivery_man.employee',
-            'order_invoice.user.employee'
+            'orderInvoice.salePoint',
+            'orderInvoice.user',
+            'orderInvoice.orders'
         )->find($id);
         
         $total_partial_paid = Collection::where('order_invoice_id', $collection->order_invoice_id)
@@ -158,6 +144,26 @@ class CollectionController extends Controller
             'total_addi_dis_amount' => $total_addi_dis_amount,
             'total_return_amount' => $total_return_amount,
         ]);
+    }
+
+
+
+
+
+
+
+
+
+    public function partial_dues(Request $request)
+    {
+        $data['breadcrumbs'] = [
+            ['title' => 'Dashboard', 'url' => route('dashboard')],
+            ['title' => 'Collections Report', 'url' => null],
+            ['title' => 'Partial Dues', 'url' => null]
+        ];
+        $data['partial_payment'] = Collection::where('status', 'Partial Payment')->get();
+
+        return view('collections_report.partial_dues', $data);
     }
 
     public function update(Request $request, $id)

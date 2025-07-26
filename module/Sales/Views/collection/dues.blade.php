@@ -288,7 +288,7 @@
             <!--end::Card-->
 
             <!--begin::Modals-->
-            {{-- @include('Sales::collection.modals.due') --}}
+            @include('Sales::collection.modals.due')
 
             <div class="modal fade" id="full_return_confirmation" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">

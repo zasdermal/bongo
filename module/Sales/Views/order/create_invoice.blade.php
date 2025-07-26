@@ -353,7 +353,7 @@
                     sku: order.sku,
                     quantity: order.quantity,
                     unit_price: order.unit_price,
-                    total_amount: order.order_total_amount
+                    order_total_amount: order.order_total_amount
                 };
 
                 order_invoice.orders.push(order_data);
